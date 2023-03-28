@@ -391,12 +391,6 @@ class CCFormer(MVXTwoStageDetector):
     def simple_test_pts(self, x, img_metas, prev_bev=None, rescale=False):
         """Test function"""
         outs = self.pts_bbox_head(x, img_metas, prev_bev=prev_bev)
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa没到result')
-        print(type(outs['pre_dm']))
-        print(outs['pre_dm'].size())
-        asdasda.asd
-        '''
 
         bbox_list = self.pts_bbox_head.get_bboxes(
             outs, img_metas, rescale=rescale)

@@ -52,14 +52,6 @@ class CCDataset(NuScenesDataset):
         #asd=[[238,239,240],[108,109,110],[41,42,43],[142,143,144],[77,78,79],[200,201,202],[65,66,67],[12,13,14],[84,85,86],[99,100,101],[222,223,224]]
         asd=[[238,239,240],[41,42,43]]
         index_list=random.choice(asd)
-        '''
-        if index%2:
-            #index_list=[41,42,43]
-            index_list=[238,239,240]
-        else:
-            #index_list=[41,42,43]
-            index_list=[108,109,110]
-        '''
         
         for i in index_list:
             i = max(0, i)
@@ -72,30 +64,8 @@ class CCDataset(NuScenesDataset):
                     (example is None or ~(example['gt_labels_3d']._data != -1).any()):
                 return None
             queue.append(example)
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(queue)
-        '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(self.pre_pipeline)
-        print(self.pipeline)
-        '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(index)
-        '''
         
         asd=self.union2one(queue)
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(asd.keys())
-        print(asd['img'].size())
-        print(asd['img'].dim())
-        print(asd['gt_bboxes_3d'].dim)
-        print(dir(asd['gt_bboxes_3d']))
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
-        '''
         
         #替换图片
         img=[]
@@ -127,27 +97,6 @@ class CCDataset(NuScenesDataset):
         #asdasdasd.data
         
         #替换相机参数
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(asd.keys())#dict_keys(['img_metas', 'gt_bboxes_3d', 'gt_labels_3d', 'img', 'density_maps'])
-        print(type(asd['img_metas']))#<class 'mmcv.parallel.data_container.DataContainer'>
-        print(len(asd['img_metas']))#3
-        print(type(asd['img_metas'].data))#<class 'dict'>
-        print(asd['img_metas'].data.keys())#dict_keys([0, 1, 2])
-        print(type(asd['img_metas'].data[0]))#<class 'dict'>
-        print(asd['img_metas'].data[0].keys())#dict_keys(['filename', 'ori_shape', 'img_shape', 'lidar2img', 'pad_shape', 'scale_factor', 'box_mode_3d', 'box_type_3d', 'img_norm_cfg', 'sample_idx', 'prev_idx', 'next_idx', 'pts_filename', 'scene_token', 'can_bus', 'prev_bev_exists'])
-        for i in range(len(asd['img_metas'])):
-            print(type(asd['img_metas'].data[i]['lidar2img']))#<class 'list'>
-            print(type(asd['img_metas'].data[i]['img_shape']))#<class 'list'>
-            print(len(asd['img_metas'].data[i]['lidar2img']))#6
-            print(type(asd['img_metas'].data[i]['lidar2img'][0]))#<class 'numpy.ndarray'>
-            print(len(asd['img_metas'].data[i]['img_shape']))#6
-            print(type(asd['img_metas'].data[i]['img_shape'][0]))#<class 'tuple'>
-            print(asd['img_metas'].data[i]['img_shape'][0])#(480, 800, 3)
-        
-        #print(asd['img_metas'])
-        asdasd
-        '''
         lidar2img=[]
         for i in range(1):
             lidar2img.append(get_lidar2img_rt("view1"))
@@ -174,35 +123,6 @@ class CCDataset(NuScenesDataset):
             print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
             '''
         asd['img_metas'] = DC(metas_map, cpu_only=True)
-        #asdasdad
-        
-        
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(asd.keys())
-        print(asd['img'].size())
-        print(asd['img'].dim())
-        asdasdasd.data
-        '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(asd.keys())
-        print(asd['img'].size())
-        print(asd['img'].dim())
-        asdasdasd.data
-        '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(asd.keys())
-        print(asd['img_metas'].dim)
-        asdasdasd.data
-        '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(len(queue))
-        print(len(asd))
-        asdasdasd.data
-        '''
         return asd
     
     def prepare_test_data(self, index):
@@ -222,20 +142,6 @@ class CCDataset(NuScenesDataset):
         img=torch.tensor(self.CC_get_data_info_img(index))
         example['img'][0]=DC(img.float(), cpu_only=False, stack=True)
         
-        '''
-        print(' ')
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
-        print(img.data.size())
-        print(type(img))
-        print(type(example))
-        print(example.keys())
-        print(type(example['img']))
-        print(type(example['img'][0]))
-        print(len(example['img']))
-        print(example['img'][0].data.size())
-        #asdasd
-        '''
-        
         #增加density_maps
         density_maps=[]
         with h5py.File('/root/autodl-tmp/BEVFormer/CCdata/ground_plane/train/Street_groundplane_train_dmaps_10.h5',"r") as gt_dm:
@@ -243,25 +149,10 @@ class CCDataset(NuScenesDataset):
             density_maps=np.transpose(density_maps, (2,0,1))
         example['density_maps'] = torch.from_numpy(density_maps)
         
-        '''
-        print(' ')
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
-        print(type(example['density_maps']))
-        print(type(example['density_maps'].data))
-        print(example['density_maps'].data.size())
-        asdasdasdads
-        '''
-        
         return example
 
 
     def union2one(self, queue):
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(type(queue))
-        print(len(queue))
-        print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
-        '''
         imgs_list = [each['img'].data for each in queue]
         metas_map = {}
         prev_scene_token = None
@@ -287,22 +178,9 @@ class CCDataset(NuScenesDataset):
                 prev_angle = copy.deepcopy(tmp_angle)
         
         
-        '''
-        print('cccccccccccccccccccccccccccccccccccccccc')
-        print(type(queue[-1]))
-        print(queue[-1]['img'].size())
-        print('dddddddddddddddddddddddddddddddddddddd')
-        '''
         queue[-1]['img'] = DC(torch.stack(imgs_list), cpu_only=False, stack=True)
         queue[-1]['img_metas'] = DC(metas_map, cpu_only=True)
         queue = queue[-1]
-        '''
-        print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
-        print(type(queue))
-        print(len(queue))
-        print('ffffffffffffffffffffffffffffffffffffffff')
-        '''
-        
         
         return queue
 
@@ -416,12 +294,6 @@ class CCDataset(NuScenesDataset):
             if data is None:
                 idx = self._rand_another(idx)
                 continue
-            '''
-            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-            print(type(data))
-            print(data.keys())
-            asdasdadada.size()
-            '''
             return data
 
     def _evaluate_single(self,
@@ -558,12 +430,6 @@ class CCDataset(NuScenesDataset):
 
         Returns:
             dict[str, float]: Results of each evaluation metric.
-        """
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(result_names)
-        asdasdasda.asdasda
-        '''
         
         
         result_files, tmp_dir = self.format_results(results, jsonfile_prefix)

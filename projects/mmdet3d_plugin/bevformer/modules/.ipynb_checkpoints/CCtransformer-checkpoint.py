@@ -156,16 +156,8 @@ class CCPerceptionTransformer(BaseModule):
         shift = bev_queries.new_tensor(
             [shift_x, shift_y]).permute(1, 0)  # xy, bs -> bs, xy
         '''
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(shift)
-        '''
         shift = bev_queries.new_tensor(
             [0., 0.]) # xy, bs -> bs, xy
-        '''
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(shift)
-        '''
 
         if prev_bev is not None:
             if prev_bev.shape[1] == bev_h * bev_w:

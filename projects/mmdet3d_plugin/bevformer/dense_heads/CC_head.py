@@ -170,14 +170,12 @@ class CCHead(DETRHead):
         object_query_embeds = self.query_embedding.weight.to(dtype)
         '''
         print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(type(object_query_embeds))#<class 'torch.nn.parameter.Parameter'>
         print(object_query_embeds.size())#torch.Size([num_query, 512])
         asdasdasd
         '''
         bev_queries = self.bev_embedding.weight.to(dtype)
         '''
         print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(type(bev_queries))#<class 'torch.nn.parameter.Parameter'>
         print(bev_queries.size())#torch.Size([bev_h_*bev_w_, 256])
         asdasdasd
         '''
@@ -232,11 +230,6 @@ class CCHead(DETRHead):
         pre_dm=self.si(pre_dm)
         
         
-        '''
-        print('aaaaaaaaaaaaa')
-        print(pre_dm.size())
-        asdasdasd
-        '''
         
         hs = hs.permute(0, 2, 1, 3)
         outputs_classes = []
@@ -281,13 +274,6 @@ class CCHead(DETRHead):
         
         
         
-        '''
-        index = torch.argmax(pre_dm)
-        print(pre_dm.view(-1)[index])
-        index = torch.argmin(pre_dm)
-        print(pre_dm.view(-1)[index])
-        asdasadssaads
-        '''
         
         outs = {
             'bev_embed': bev_embed,
@@ -587,7 +573,7 @@ class CCHead(DETRHead):
         #losses_bbox.append(self.reg_cost(pre_dm[0],density_maps[0])+self.add_cost(pre_dm[0],density_maps[0]))
         losses_bbox.append(self.reg_cost(pre_dm[0],density_maps[0]))
         losses_cls=losses_bbox
-        print('pre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dm')
+        #print('pre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dmpre_dm')
         #print(losses_bbox)
         #asdasdasd
         
@@ -602,11 +588,11 @@ class CCHead(DETRHead):
         np.save('/root/autodl-tmp/BEVFormer/train/pre_dm_{}.npy'.format(z),np.array(pre_dm[-1].cpu().detach()))
         np.save('/root/autodl-tmp/BEVFormer/train/density_maps_{}.npy'.format(z),np.array(density_maps[0].cpu().detach()))
         np.save('/root/autodl-tmp/BEVFormer/train/loss_{}.npy'.format(z),np.array(losses_bbox[-1].cpu().detach()))
-        
+        '''
         print(np.sum(np.array(pre_dm[-1].cpu().detach())))
         print(np.sum(np.array(density_maps[0].cpu().detach())))
         print(losses_bbox[-1])
-        #asdasd
+        '''
 
         loss_dict = dict()
         # loss of proposal generated from encode feature map.

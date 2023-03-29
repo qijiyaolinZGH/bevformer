@@ -45,7 +45,7 @@ _ffn_dim_ = _dim_*2
 _num_levels_ = 1
 bev_h_ = 100
 bev_w_ = 100
-queue_length = 3 # each sequence contains `queue_length` frames.(改成1会报错)
+queue_length = 1 # each sequence contains `queue_length` frames.(改成1会报错)
 
 model = dict(
     type='CCFormer',
@@ -444,7 +444,16 @@ lr_config = dict(
     min_lr_ratio=1e-3)
 '''
 #optimizer = dict(type='Adam', lr=0.0005, weight_decay=0.0000)
-optimizer = dict(type='Adam', lr=0.0005, weight_decay=0.0000)
+#optimizer = dict(type='Adam', lr=0.0005, weight_decay=0.0000)
+optimizer = dict(
+    type='AdamW',
+    lr=0.002,
+    paramwise_cfg=dict(
+        custom_keys={
+            'img_backbone': dict(lr_mult=0.1),
+            'decoder': dict(lr_mult=10),
+        }),
+    weight_decay=0.0000)
 
 lr_config = dict(
     policy='CosineAnnealing',
